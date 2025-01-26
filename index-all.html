@@ -203,7 +203,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/spdx/storage/NullModelStore.html#collectionSize(java.lang.String,org.spdx.storage.PropertyDescriptor)">collectionSize(String, PropertyDescriptor)</a></span> - Method in class org.spdx.storage.<a href="org/spdx/storage/NullModelStore.html" title="class in org.spdx.storage">NullModelStore</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/spdx/core/NotEquivalentReason.NotEquivalent.html#COMPARE_PROPERTY_MISSING">COMPARE_PROPERTY_MISSING</a></span> - org.spdx.core.<a href="org/spdx/core/NotEquivalentReason.NotEquivalent.html" title="enum in org.spdx.core">NotEquivalentReason.NotEquivalent</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Indicates that a property to compare is missing.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/spdx/licenseTemplate/HtmlTemplateOutputHandler.html#completeParsing()">completeParsing()</a></span> - Method in class org.spdx.licenseTemplate.<a href="org/spdx/licenseTemplate/HtmlTemplateOutputHandler.html" title="class in org.spdx.licenseTemplate">HtmlTemplateOutputHandler</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/spdx/licenseTemplate/ILicenseTemplateOutputHandler.html#completeParsing()">completeParsing()</a></span> - Method in interface org.spdx.licenseTemplate.<a href="org/spdx/licenseTemplate/ILicenseTemplateOutputHandler.html" title="interface in org.spdx.licenseTemplate">ILicenseTemplateOutputHandler</a></dt>
@@ -304,7 +306,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Deserialize / read an SPDX document from a stream</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/spdx/core/NotEquivalentReason.NotEquivalent.html#DIFFERENT_CLASS">DIFFERENT_CLASS</a></span> - org.spdx.core.<a href="org/spdx/core/NotEquivalentReason.NotEquivalent.html" title="enum in org.spdx.core">NotEquivalentReason.NotEquivalent</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Indicates that the objects are of different classes.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/spdx/storage/IModelStore.IdType.html#DocumentRef">DocumentRef</a></span> - org.spdx.storage.<a href="org/spdx/storage/IModelStore.IdType.html" title="enum in org.spdx.storage">IModelStore.IdType</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/spdx/core/DuplicateSpdxIdException.html" title="class in org.spdx.core"><span class="typeNameLink">DuplicateSpdxIdException</span></a> - Exception in <a href="org/spdx/core/package-summary.html">org.spdx.core</a></dt>
@@ -391,6 +395,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><span class="memberNameLink"><a href="org/spdx/licenseTemplate/HtmlTemplateOutputHandler.html#formatReplaceabledHTML(java.lang.String,java.lang.String)">formatReplaceabledHTML(String, String)</a></span> - Static method in class org.spdx.licenseTemplate.<a href="org/spdx/licenseTemplate/HtmlTemplateOutputHandler.html" title="class in org.spdx.licenseTemplate">HtmlTemplateOutputHandler</a></dt>
 <dd>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/spdx/licenseTemplate/HtmlTemplateOutputHandler.html#formatReplaceableHTML(java.lang.String,java.lang.String)">formatReplaceableHTML(String, String)</a></span> - Static method in class org.spdx.licenseTemplate.<a href="org/spdx/licenseTemplate/HtmlTemplateOutputHandler.html" title="class in org.spdx.licenseTemplate">HtmlTemplateOutputHandler</a></dt>
+<dd>
 <div class="block">Format HTML for a replaceable string</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/spdx/licenseTemplate/HtmlTemplateOutputHandler.html#formatStartOptionalHTML(java.lang.String)">formatStartOptionalHTML(String)</a></span> - Static method in class org.spdx.licenseTemplate.<a href="org/spdx/licenseTemplate/HtmlTemplateOutputHandler.html" title="class in org.spdx.licenseTemplate">HtmlTemplateOutputHandler</a></dt>
@@ -411,9 +419,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/spdx/storage/IModelStore.html#getCaseSensisitiveId(java.lang.String,java.lang.String)">getCaseSensisitiveId(String, String)</a></span> - Method in interface org.spdx.storage.<a href="org/spdx/storage/IModelStore.html" title="interface in org.spdx.storage">IModelStore</a></dt>
 <dd>
+<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span>
+<div class="deprecationComment">As of release 1.0, replaced by <a href="org/spdx/storage/IModelStore.html#getCaseSensitiveId(java.lang.String,java.lang.String)"><code>IModelStore.getCaseSensitiveId(String, String)</code></a></div>
+</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/spdx/storage/IModelStore.html#getCaseSensitiveId(java.lang.String,java.lang.String)">getCaseSensitiveId(String, String)</a></span> - Method in interface org.spdx.storage.<a href="org/spdx/storage/IModelStore.html" title="interface in org.spdx.storage">IModelStore</a></dt>
+<dd>
 <div class="block">In SPDX 2.2 license refs are allowed to be matched case-insensitive.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="org/spdx/storage/NullModelStore.html#getCaseSensisitiveId(java.lang.String,java.lang.String)">getCaseSensisitiveId(String, String)</a></span> - Method in class org.spdx.storage.<a href="org/spdx/storage/NullModelStore.html" title="class in org.spdx.storage">NullModelStore</a></dt>
+<dt><span class="memberNameLink"><a href="org/spdx/storage/NullModelStore.html#getCaseSensitiveId(java.lang.String,java.lang.String)">getCaseSensitiveId(String, String)</a></span> - Method in class org.spdx.storage.<a href="org/spdx/storage/NullModelStore.html" title="class in org.spdx.storage">NullModelStore</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/spdx/licenseTemplate/LineColumn.html#getColumn()">getColumn()</a></span> - Method in class org.spdx.licenseTemplate.<a href="org/spdx/licenseTemplate/LineColumn.html" title="class in org.spdx.licenseTemplate">LineColumn</a></dt>
 <dd>&nbsp;</dd>
@@ -428,6 +442,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="org/spdx/core/DefaultModelStore.html#getDefaultDocumentUri()">getDefaultDocumentUri()</a></span> - Static method in class org.spdx.core.<a href="org/spdx/core/DefaultModelStore.html" title="class in org.spdx.core">DefaultModelStore</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/spdx/core/DefaultModelStore.html#getDefaultModelStore()">getDefaultModelStore()</a></span> - Static method in class org.spdx.core.<a href="org/spdx/core/DefaultModelStore.html" title="class in org.spdx.core">DefaultModelStore</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/spdx/core/CoreModelObject.html#getDoublePropertyValue(org.spdx.storage.PropertyDescriptor)">getDoublePropertyValue(PropertyDescriptor)</a></span> - Method in class org.spdx.core.<a href="org/spdx/core/CoreModelObject.html" title="class in org.spdx.core">CoreModelObject</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/spdx/core/CoreModelObject.html#getEnumPropertyValue(org.spdx.storage.PropertyDescriptor)">getEnumPropertyValue(PropertyDescriptor)</a></span> - Method in class org.spdx.core.<a href="org/spdx/core/CoreModelObject.html" title="class in org.spdx.core">CoreModelObject</a></dt>
 <dd>&nbsp;</dd>
@@ -592,7 +608,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><a href="org/spdx/licenseTemplate/ILicenseTemplateOutputHandler.html" title="interface in org.spdx.licenseTemplate"><span class="typeNameLink">ILicenseTemplateOutputHandler</span></a> - Interface in <a href="org/spdx/licenseTemplate/package-summary.html">org.spdx.licenseTemplate</a></dt>
 <dd>
-<div class="block">Handles output for parsed license templates.</div>
+<div class="block">Handles output for parsed license templates</div>
 </dd>
 <dt><a href="org/spdx/core/IModelCopyManager.html" title="interface in org.spdx.core"><span class="typeNameLink">IModelCopyManager</span></a> - Interface in <a href="org/spdx/core/package-summary.html">org.spdx.core</a></dt>
 <dd>
@@ -614,7 +630,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>&nbsp;</dd>
 <dt><a href="org/spdx/core/IndividualUriValue.html" title="interface in org.spdx.core"><span class="typeNameLink">IndividualUriValue</span></a> - Interface in <a href="org/spdx/core/package-summary.html">org.spdx.core</a></dt>
 <dd>
-<div class="block">Classes which implement the IndividuallUriValue interface will be stored as a single value.</div>
+<div class="block">Implementation classes of the <code>IndividualUriValue</code> stores
+ a single URI value</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/spdx/core/ModelRegistry.html#inflateModelObject(org.spdx.storage.IModelStore,java.lang.String,java.lang.String,org.spdx.core.IModelCopyManager,java.lang.String,boolean,java.lang.String)">inflateModelObject(IModelStore, String, String, IModelCopyManager, String, boolean, String)</a></span> - Method in class org.spdx.core.<a href="org/spdx/core/ModelRegistry.html" title="class in org.spdx.core">ModelRegistry</a></dt>
 <dd>
@@ -799,7 +816,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h2 class="title">M</h2>
 <dl>
 <dt><span class="memberNameLink"><a href="org/spdx/core/NotEquivalentReason.NotEquivalent.html#MISSING_PROPERTY">MISSING_PROPERTY</a></span> - org.spdx.core.<a href="org/spdx/core/NotEquivalentReason.NotEquivalent.html" title="enum in org.spdx.core">NotEquivalentReason.NotEquivalent</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Indicates that a property is missing in one of the objects.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/spdx/core/ModelObjectHelper.html#modelClassToStoredClass(java.lang.Class)">modelClassToStoredClass(Class&lt;?&gt;)</a></span> - Static method in class org.spdx.core.<a href="org/spdx/core/ModelObjectHelper.html" title="class in org.spdx.core">ModelObjectHelper</a></dt>
 <dd>
 <div class="block">Convert the class to the appropriate stored class</div>
@@ -859,14 +878,21 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><a href="org/spdx/core/NotEquivalentReason.html" title="class in org.spdx.core"><span class="typeNameLink">NotEquivalentReason</span></a> - Class in <a href="org/spdx/core/package-summary.html">org.spdx.core</a></dt>
 <dd>
-<div class="block">Primarily used for debugging.</div>
+<div class="block">Records details when two model objects are compared and are determined to
+ not be equivalent</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/spdx/core/NotEquivalentReason.html#%3Cinit%3E(org.spdx.core.NotEquivalentReason.NotEquivalent)">NotEquivalentReason(NotEquivalentReason.NotEquivalent)</a></span> - Constructor for class org.spdx.core.<a href="org/spdx/core/NotEquivalentReason.html" title="class in org.spdx.core">NotEquivalentReason</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Constructs a NotEquivalentReason with the specified reason.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/spdx/core/NotEquivalentReason.html#%3Cinit%3E(org.spdx.core.NotEquivalentReason.NotEquivalent,org.spdx.storage.PropertyDescriptor)">NotEquivalentReason(NotEquivalentReason.NotEquivalent, PropertyDescriptor)</a></span> - Constructor for class org.spdx.core.<a href="org/spdx/core/NotEquivalentReason.html" title="class in org.spdx.core">NotEquivalentReason</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Constructs a NotEquivalentReason with the specified reason and property.</div>
+</dd>
 <dt><a href="org/spdx/core/NotEquivalentReason.NotEquivalent.html" title="enum in org.spdx.core"><span class="typeNameLink">NotEquivalentReason.NotEquivalent</span></a> - Enum in <a href="org/spdx/core/package-summary.html">org.spdx.core</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Enum representing the reasons why two model objects are not equivalent.</div>
+</dd>
 <dt><a href="org/spdx/storage/NullModelStore.html" title="class in org.spdx.storage"><span class="typeNameLink">NullModelStore</span></a> - Class in <a href="org/spdx/storage/package-summary.html">org.spdx.storage</a></dt>
 <dd>
 <div class="block">Null model store to be used with constants and individuals</div>
@@ -894,12 +920,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><a href="org/spdx/licenseTemplate/package-summary.html">org.spdx.licenseTemplate</a> - package org.spdx.licenseTemplate</dt>
 <dd>
-<div class="block">License template are used for matching licenses.</div>
+<div class="block">License template are used for matching licenses</div>
 </dd>
 <dt><a href="org/spdx/storage/package-summary.html">org.spdx.storage</a> - package org.spdx.storage</dt>
 <dd>
-<div class="block">Contains classes that implement the storage interfaces for reading and writing 
- SPDX document properties.</div>
+<div class="block">Classes that implement the storage interfaces for reading and writing 
+ SPDX document properties</div>
 </dd>
 </dl>
 <a id="I:P">
@@ -918,11 +944,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  and rules found</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/spdx/core/NotEquivalentReason.NotEquivalent.html#PROPERTY_NOT_EQUIVALENT">PROPERTY_NOT_EQUIVALENT</a></span> - org.spdx.core.<a href="org/spdx/core/NotEquivalentReason.NotEquivalent.html" title="enum in org.spdx.core">NotEquivalentReason.NotEquivalent</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Indicates that a property value is not equivalent between the objects.</div>
+</dd>
 <dt><a href="org/spdx/storage/PropertyDescriptor.html" title="class in org.spdx.storage"><span class="typeNameLink">PropertyDescriptor</span></a> - Class in <a href="org/spdx/storage/package-summary.html">org.spdx.storage</a></dt>
 <dd>
 <div class="block">Holds a description of a property including the property name and property 
- nameSpace.</div>
+ nameSpace</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/spdx/storage/PropertyDescriptor.html#%3Cinit%3E(java.lang.String,java.lang.String)">PropertyDescriptor(String, String)</a></span> - Constructor for class org.spdx.storage.<a href="org/spdx/storage/PropertyDescriptor.html" title="class in org.spdx.storage">PropertyDescriptor</a></dt>
 <dd>&nbsp;</dd>
@@ -1012,11 +1040,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="memberNameLink"><a href="org/spdx/storage/ISerializableModelStore.html#serialize(java.io.OutputStream)">serialize(OutputStream)</a></span> - Method in interface org.spdx.storage.<a href="org/spdx/storage/ISerializableModelStore.html" title="interface in org.spdx.storage">ISerializableModelStore</a></dt>
 <dd>
-<div class="block">Serialize all the items stored in the model store.</div>
+<div class="block">Serialize all the items stored in the model store</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/spdx/storage/ISerializableModelStore.html#serialize(java.io.OutputStream,org.spdx.core.CoreModelObject)">serialize(OutputStream, CoreModelObject)</a></span> - Method in interface org.spdx.storage.<a href="org/spdx/storage/ISerializableModelStore.html" title="interface in org.spdx.storage">ISerializableModelStore</a></dt>
 <dd>
-<div class="block">Serialize the items stored in the model store.</div>
+<div class="block">Serialize the items stored in the model store</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/spdx/licenseTemplate/LineColumn.html#setColumn(int)">setColumn(int)</a></span> - Method in class org.spdx.licenseTemplate.<a href="org/spdx/licenseTemplate/LineColumn.html" title="class in org.spdx.licenseTemplate">LineColumn</a></dt>
 <dd>&nbsp;</dd>
@@ -1078,7 +1106,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>&nbsp;</dd>
 <dt><a href="org/spdx/core/SimpleUriValue.html" title="class in org.spdx.core"><span class="typeNameLink">SimpleUriValue</span></a> - Class in <a href="org/spdx/core/package-summary.html">org.spdx.core</a></dt>
 <dd>
-<div class="block">Simple class to just store a URI value.</div>
+<div class="block">Simple class to just store a URI value</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/spdx/core/SimpleUriValue.html#%3Cinit%3E(java.lang.String)">SimpleUriValue(String)</a></span> - Constructor for class org.spdx.core.<a href="org/spdx/core/SimpleUriValue.html" title="class in org.spdx.core">SimpleUriValue</a></dt>
 <dd>&nbsp;</dd>
@@ -1164,7 +1192,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dd>
 <dt><a href="org/spdx/core/SpdxObjectNotInStoreException.html" title="class in org.spdx.core"><span class="typeNameLink">SpdxObjectNotInStoreException</span></a> - Exception in <a href="org/spdx/core/package-summary.html">org.spdx.core</a></dt>
 <dd>
-<div class="block">Exception when an SDPX ID or object was not found in a model store</div>
+<div class="block">Exception when an SPDX ID or object was not found in a model store</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/spdx/core/SpdxObjectNotInStoreException.html#%3Cinit%3E()">SpdxObjectNotInStoreException()</a></span> - Constructor for exception org.spdx.core.<a href="org/spdx/core/SpdxObjectNotInStoreException.html" title="class in org.spdx.core">SpdxObjectNotInStoreException</a></dt>
 <dd>&nbsp;</dd>
@@ -1213,7 +1241,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>&nbsp;</dd>
 <dt><a href="org/spdx/licenseTemplate/TextTemplateOutputHandler.html" title="class in org.spdx.licenseTemplate"><span class="typeNameLink">TextTemplateOutputHandler</span></a> - Class in <a href="org/spdx/licenseTemplate/package-summary.html">org.spdx.licenseTemplate</a></dt>
 <dd>
-<div class="block">License template output handler for generating a text version of a license from a license template.</div>
+<div class="block">License template output handler for generating a text version of a license
+ from a license template</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/spdx/licenseTemplate/TextTemplateOutputHandler.html#%3Cinit%3E()">TextTemplateOutputHandler()</a></span> - Constructor for class org.spdx.licenseTemplate.<a href="org/spdx/licenseTemplate/TextTemplateOutputHandler.html" title="class in org.spdx.licenseTemplate">TextTemplateOutputHandler</a></dt>
 <dd>&nbsp;</dd>
