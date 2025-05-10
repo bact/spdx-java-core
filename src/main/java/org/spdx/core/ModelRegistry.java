@@ -45,13 +45,22 @@ public class ModelRegistry {
 	private ModelRegistry() {
 		// Nothing really to be done here
 	}
-	
+
+	/**
+	 * Retrieve the singleton instance of the ModelRegistry
+	 *
+	 * @return the singleton instance of ModelRegistry
+	 */
 	public static ModelRegistry getModelRegistry() {
 		return _instance;
 	}
-	
+
 	/**
-	 * @param modelInfo model info to register
+	 * Register a model in the registry
+	 * <p>
+	 * Each specification version supported by the model will be added to the registry.
+	 *
+	 * @param modelInfo The model information to register
 	 */
 	public void registerModel(ISpdxModelInfo modelInfo) {
 		lock.writeLock().lock();
@@ -65,8 +74,10 @@ public class ModelRegistry {
 	}
 
 	/**
-	 * @param specVersion version of the spc
-	 * @return true if the specVersion is supported in one of the registered model infos
+	 * Check if the specified SPDX specification version is supported by the registry
+	 *
+	 * @param specVersion The version of the SPDX specification to check.
+	 * @return {@code true} if the specified specVersion is supported, {@code false} otherwise.
 	 */
 	public boolean containsSpecVersion(String specVersion) {
 		lock.readLock().lock();
@@ -79,6 +90,7 @@ public class ModelRegistry {
 
 	/**
 	 * Converts a URI to enum
+	 *
 	 * @param uri URI for the Enum individual
 	 * @param specVersion Version of the spec the enum belongs to
 	 * @return the Enum represented by the individualURI if it exists within the spec model
@@ -97,7 +109,6 @@ public class ModelRegistry {
 			lock.readLock().unlock();
 		}
 	}
-	
 
 	/**
 	 * @param store store to use for the inflated object
@@ -213,17 +224,23 @@ public class ModelRegistry {
 	}
 
 	/**
-	 * @return a list of all supported versions
+	 * Retrieve a list of all supported SPDX specification versions
+	 *
+	 * @return An unmodifiable list of all supported specification versions.
 	 */
 	public List<String> getSupportedVersions() {
 		return Collections.unmodifiableList(new ArrayList<>(registeredModels.keySet()));
 	}
 
 	/**
-	 * @param clazz model class
-	 * @param specVersion version of the spec
-	 * @return true if clazz can be represented as external to the store
-	 * @throws ModelRegistryException on uninitialized registry
+	 * Determine if the specified class can be represented as external to the model store for the
+	 * given SPDX specification version
+	 *
+	 * @param clazz The model class to check.
+	 * @param specVersion The version of the SPDX specification.
+	 * @return {@code true} if the class can be represented as external to the store, {@code false}
+	 *         otherwise.
+	 * @throws ModelRegistryException If the registry does not support the specified specVersion.
 	 */
 	public boolean canBeExternal(Class<?> clazz, String specVersion) throws ModelRegistryException {
 		Objects.requireNonNull(specVersion, SPEC_VERSION_NULL_MSG);
