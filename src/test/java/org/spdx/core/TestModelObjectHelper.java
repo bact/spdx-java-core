@@ -298,6 +298,10 @@ public class TestModelObjectHelper {
 		// boolean
 		result = ModelObjectHelper.modelObjectToStoredObject(false, modelStore, copyManager, null);
 		assertEquals(false, result);
+		// typed literal
+		TypedLiteral literal = new TypedLiteral("0.35", "http://www.w3.org/2001/XMLSchema#decimal");
+		result = ModelObjectHelper.modelObjectToStoredObject(literal, modelStore, copyManager, null);
+		assertEquals(literal, result);
 	}
 
 	/**
