@@ -198,6 +198,20 @@ public class TestModelRegistry {
 		assertEquals(MockModelType.class, registry.typeToClass("https://example.org/ext/Registered", "3.0.0"));
 		assertNull(registry.typeToClass("UnknownType", "3.0.0"));
 		assertNull(registry.typeToClass("_:b0", "3.0.0"));
+		// IRIs in the SPDX namespace are never extension types
+		assertNull(registry.typeToClass("https://spdx.org/rdf/3.0.1/terms/Core/Element", "3.0.0"));
+		assertNull(registry.typeToClass("https://spdx.org/rdf/3.0.1/terms/Extension/Foo", "3.0.0"));
+		assertNull(registry.typeToClass("http://spdx.org/rdf/terms#Package", "3.0.0"));
+		try {
+			new TypedValue("https://my.uri", "https://spdx.org/rdf/3.0.1/terms/Core/Element", "3.0.0");
+			fail("A type in the SPDX namespace must not be accepted");
+		} catch (SpdxInvalidTypeException e) {
+			// expected
+		}
+		// SPDX 2 has no extensions
+		assertNull(registry.typeToClass(customType, "SPDX-2.3"));
+		assertFalse(registry.inflateModelObject(modelStore, "https://my.uri2", customType, copyManager,
+				"SPDX-2.3", true, "prefix") instanceof MockExtension);
 		// the mock extension reports a fixed type which must be known to create it
 		registry.registerExtensionType(MockExtension.MOCK_EXTENSION_TYPE, MockExtension.class);
 		CoreModelObject result = registry.inflateModelObject(modelStore, "https://my.uri", customType,
