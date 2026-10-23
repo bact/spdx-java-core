@@ -44,6 +44,12 @@ public class ModelRegistry {
 	private final Map<String, ISpdxModelInfo> registeredModels = new HashMap<>();
 	private final Map<String, Class<? extends CoreModelObject>> extensions = new HashMap<>();
 	private Class<? extends CoreModelObject> defaultExtensionType = null;
+
+	/**
+	 * Namespaces of the SPDX terms - types in these namespaces are never custom extension types
+	 */
+	private static final String SPDX_NAMESPACE_HTTPS = "https://spdx.org/rdf/";
+	private static final String SPDX_NAMESPACE_HTTP = "http://spdx.org/rdf/";
 	
 	/**
 	 * Private constructor - singleton class
@@ -328,6 +334,10 @@ public class ModelRegistry {
 	 * and not registered with {@link #registerExtensionType(String, Class)}, unless a default
 	 * extension class is already registered
 	 * <p>
+	 * The default applies only to SPDX 3 spec versions (the versions with extensions) and never
+	 * to IRIs in the SPDX namespace (https://spdx.org/rdf/ and http://spdx.org/rdf/).
+	 * </p>
+	 * <p>
 	 * This allows a deserializer to keep objects of extension types it does not know (for example,
 	 * SPDX 3 subclasses of Extension defined by third parties) without registering every type IRI
 	 * found in its input.  The class must have a constructor with the parameters
@@ -370,6 +380,11 @@ public class ModelRegistry {
 	private boolean isDefaultExtensionType(String type, String specVersion) {
 		if (Objects.isNull(defaultExtensionType) || extensions.containsKey(type) ||
 				registeredModels.get(specVersion).getTypeToClassMap().containsKey(type)) {
+			return false;
+		}
+		// Only SPDX 3 has extensions, and an IRI in the SPDX namespace is never a custom type
+		if (!specVersion.startsWith(SpdxCoreConstants.SpdxMajorVersion.VERSION_3.prefix()) ||
+				type.startsWith(SPDX_NAMESPACE_HTTPS) || type.startsWith(SPDX_NAMESPACE_HTTP)) {
 			return false;
 		}
 		try {
