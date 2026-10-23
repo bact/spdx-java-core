@@ -7,6 +7,8 @@ package org.spdx.core;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,6 +43,7 @@ public class ModelRegistry {
 
 	private final Map<String, ISpdxModelInfo> registeredModels = new HashMap<>();
 	private final Map<String, Class<? extends CoreModelObject>> extensions = new HashMap<>();
+	private Class<? extends CoreModelObject> defaultExtensionType = null;
 	
 	/**
 	 * Private constructor - singleton class
@@ -188,7 +191,9 @@ public class ModelRegistry {
 				throw new ModelRegistryException(specVersion + DOES_NOT_EXIST_MSG);
 			}
 			if (extensions.containsKey(type)) {
-				return inflateExtension(modelStore, objectUri, type, copyManager, specVersion, create, idPrefix);
+				return inflateExtension(extensions.get(type), modelStore, objectUri, type, copyManager, specVersion, create, idPrefix);
+			} else if (isDefaultExtensionType(type, specVersion)) {
+				return inflateExtension(defaultExtensionType, modelStore, objectUri, type, copyManager, specVersion, create, idPrefix);
 			} else {
 				return registeredModels.get(specVersion).createModelObject(modelStore, objectUri,
 						type, copyManager, specVersion, create, idPrefix);
@@ -198,11 +203,11 @@ public class ModelRegistry {
 		}
 	}
 
-	private CoreModelObject inflateExtension(IModelStore modelStore, String objectUri, String type,
+	private CoreModelObject inflateExtension(Class<? extends CoreModelObject> clazz, IModelStore modelStore, String objectUri, String type,
 											 IModelCopyManager copyManager, String specVersion,
 											 boolean create, String idPrefix) throws InvalidSPDXAnalysisException {
 		try {
-			Constructor<?> con = extensions.get(type).getDeclaredConstructor(IModelStore.class, String.class,
+			Constructor<?> con = clazz.getDeclaredConstructor(IModelStore.class, String.class,
 					IModelCopyManager.class, boolean.class, String.class, String.class);
 			return (CoreModelObject)con.newInstance(modelStore, objectUri, copyManager, create, specVersion, idPrefix);
 		} catch (NoSuchMethodException e) {
@@ -238,7 +243,11 @@ public class ModelRegistry {
 			if (!registeredModels.containsKey(specVersion)) {
 				throw new ModelRegistryException("No implementation found for SPDX spec version "+specVersion);
 			}
-			return registeredModels.get(specVersion).getTypeToClassMap().getOrDefault(type, extensions.get(type));
+			Class<?> retval = registeredModels.get(specVersion).getTypeToClassMap().getOrDefault(type, extensions.get(type));
+			if (Objects.isNull(retval) && isDefaultExtensionType(type, specVersion)) {
+				retval = defaultExtensionType;
+			}
+			return retval;
 		} finally {
 			lock.readLock().unlock();
 		}
@@ -251,7 +260,8 @@ public class ModelRegistry {
 		lock.writeLock().lock();
 		try {
 			registeredModels.clear();
-			extensions.clear();;
+			extensions.clear();
+			defaultExtensionType = null;
 		} finally {
 			lock.writeLock().unlock();
 		}
@@ -286,7 +296,7 @@ public class ModelRegistry {
 			if (!containsSpecVersion(specVersion)) {
 				throw new ModelRegistryException(specVersion + DOES_NOT_EXIST_MSG);
 			}
-			if (extensions.containsValue(clazz)) {
+			if (extensions.containsValue(clazz) || clazz.equals(defaultExtensionType)) {
 				return false;
 			}
 			return registeredModels.get(specVersion).canBeExternal(clazz);
@@ -310,6 +320,63 @@ public class ModelRegistry {
 			return extensions.put(type, clazz);
 		} finally {
 			lock.writeLock().unlock();
+		}
+	}
+
+	/**
+	 * Registers a class used for every type that is an absolute IRI not defined by a registered model
+	 * and not registered with {@link #registerExtensionType(String, Class)}, unless a default
+	 * extension class is already registered
+	 * <p>
+	 * This allows a deserializer to keep objects of extension types it does not know (for example,
+	 * SPDX 3 subclasses of Extension defined by third parties) without registering every type IRI
+	 * found in its input.  The class must have a constructor with the parameters
+	 * (IModelStore, String objectUri, IModelCopyManager, boolean create, String specVersion, String idPrefix).
+	 * </p>
+	 * @param clazz class to use for unknown absolute IRI types
+	 * @return the default extension class in effect after the call - the existing one if there was one
+	 */
+	public Class<? extends CoreModelObject> registerDefaultExtensionTypeIfAbsent(Class<? extends CoreModelObject> clazz) {
+		Objects.requireNonNull(clazz, "Class can not be null to register a default extension type");
+		lock.writeLock().lock();
+		try {
+			if (Objects.isNull(defaultExtensionType)) {
+				defaultExtensionType = clazz;
+			}
+			return defaultExtensionType;
+		} finally {
+			lock.writeLock().unlock();
+		}
+	}
+
+	/**
+	 * @return the class used for unknown absolute IRI types, or null if none is registered
+	 */
+	public @Nullable Class<? extends CoreModelObject> getDefaultExtensionType() {
+		lock.readLock().lock();
+		try {
+			return defaultExtensionType;
+		} finally {
+			lock.readLock().unlock();
+		}
+	}
+
+	/**
+	 * Must be called while holding the lock
+	 * @param type type
+	 * @param specVersion version of the SPDX spec
+	 * @return true if the type should be inflated with the default extension type
+	 */
+	private boolean isDefaultExtensionType(String type, String specVersion) {
+		if (Objects.isNull(defaultExtensionType) || extensions.containsKey(type) ||
+				registeredModels.get(specVersion).getTypeToClassMap().containsKey(type)) {
+			return false;
+		}
+		try {
+			URI uri = new URI(type);
+			return uri.isAbsolute() && !"_".equals(uri.getScheme());
+		} catch (URISyntaxException e) {
+			return false;
 		}
 	}
 }

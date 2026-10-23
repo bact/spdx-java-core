@@ -177,4 +177,36 @@ public class TestModelRegistry {
 
 	}
 
+	@Test
+	public void testDefaultExtensionType() throws InvalidSPDXAnalysisException {
+		ModelRegistry registry = ModelRegistry.getModelRegistry();
+		registry.clearAll();
+		registry.registerModel(new MockModelInfo());
+		String customType = "https://example.org/ext/CustomExtension";
+		assertNull(registry.typeToClass(customType, "3.0.0"));
+		assertNull(registry.getDefaultExtensionType());
+		assertEquals(MockExtension.class, registry.registerDefaultExtensionTypeIfAbsent(MockExtension.class));
+		// a second registration does not replace the first
+		assertEquals(MockExtension.class, registry.registerDefaultExtensionTypeIfAbsent(MockModelType.class));
+		assertEquals(MockExtension.class, registry.getDefaultExtensionType());
+		// any absolute IRI which is not otherwise known uses the default extension type
+		assertEquals(MockExtension.class, registry.typeToClass(customType, "3.0.0"));
+		assertEquals(MockExtension.class, registry.typeToClass("urn:example:Custom", "3.0.0"));
+		// model types, explicitly registered extensions, and non-IRI types are not affected
+		assertEquals(MockModelType.class, registry.typeToClass(MockModelType.TYPE, "3.0.0"));
+		registry.registerExtensionType("https://example.org/ext/Registered", MockModelType.class);
+		assertEquals(MockModelType.class, registry.typeToClass("https://example.org/ext/Registered", "3.0.0"));
+		assertNull(registry.typeToClass("UnknownType", "3.0.0"));
+		assertNull(registry.typeToClass("_:b0", "3.0.0"));
+		// the mock extension reports a fixed type which must be known to create it
+		registry.registerExtensionType(MockExtension.MOCK_EXTENSION_TYPE, MockExtension.class);
+		CoreModelObject result = registry.inflateModelObject(modelStore, "https://my.uri", customType,
+				copyManager, "3.0.0", true, "prefix");
+		assertTrue(result instanceof MockExtension);
+		assertFalse(registry.canBeExternal(MockExtension.class, "3.0.0"));
+		registry.clearAll();
+		assertNull(registry.getDefaultExtensionType());
+		registry.registerModel(new MockModelInfo());
+	}
+
 }
