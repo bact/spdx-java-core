@@ -298,6 +298,11 @@ public class TestModelObjectHelper {
 		// boolean
 		result = ModelObjectHelper.modelObjectToStoredObject(false, modelStore, copyManager, null);
 		assertEquals(false, result);
+		// floating point
+		result = ModelObjectHelper.modelObjectToStoredObject(0.35d, modelStore, copyManager, null);
+		assertEquals(0.35d, result);
+		result = ModelObjectHelper.modelObjectToStoredObject(1.5f, modelStore, copyManager, null);
+		assertEquals(1.5f, result);
 		// typed literal
 		TypedLiteral literal = new TypedLiteral("0.35", "http://www.w3.org/2001/XMLSchema#decimal");
 		result = ModelObjectHelper.modelObjectToStoredObject(literal, modelStore, copyManager, null);

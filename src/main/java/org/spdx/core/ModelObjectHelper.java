@@ -222,7 +222,7 @@ public class ModelObjectHelper {
 				return mValue.toTypedValue();
 			}
 		} else if (value instanceof Integer || value instanceof String ||
-				value instanceof Boolean || value instanceof Double ||
+				value instanceof Boolean || value instanceof Double || value instanceof Float ||
 				value instanceof TypedLiteral) {
 			return value;
 		} else if (Objects.isNull(value)) {
