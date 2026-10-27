@@ -224,6 +224,22 @@ public class TestCoreModelObject {
 	}
 
 	/**
+	 * A stored integer too large for an Integer is reported with its value, not as a wrong type
+	 * @throws InvalidSPDXAnalysisException on unexpected errors
+	 */
+	@Test
+	public void testGetIntegerPropertyValueTooLarge() throws InvalidSPDXAnalysisException {
+		modelType.getModelStore().setValue(modelType.getObjectUri(), INTEGER_PROPERTY_DESCRIPTOR,
+				new TypedLiteral("21474836480", "http://www.w3.org/2001/XMLSchema#integer"));
+		try {
+			modelType.getIntegerPropertyValue(INTEGER_PROPERTY_DESCRIPTOR);
+			fail("Expected an error for a value too large for an Integer");
+		} catch (SpdxInvalidTypeException e) {
+			assertTrue(e.getMessage(), e.getMessage().contains("21474836480"));
+		}
+	}
+
+	/**
 	 * Test method for {@link org.spdx.core.CoreModelObject#removeProperty(org.spdx.storage.PropertyDescriptor)}.
 	 * @throws InvalidSPDXAnalysisException on unexpected errors
 	 */

@@ -383,6 +383,11 @@ public abstract class CoreModelObject {
 		Optional<Object> result = getObjectPropertyValue(propertyDescriptor, Integer.class);
 		Optional<Integer> retval;
 		if (result.isPresent()) {
+			if (result.get() instanceof TypedLiteral) {
+				// a valid integer too large for an Integer, kept as read (e.g., an xsd:nonNegativeInteger)
+				throw new SpdxInvalidTypeException(PROPERTY_MSG+propertyDescriptor+" value "+
+						((TypedLiteral)result.get()).getValue()+" does not fit in a Java Integer");
+			}
 			if (!(result.get() instanceof Integer)) {
 				throw new SpdxInvalidTypeException(PROPERTY_MSG+propertyDescriptor+" is not of type Integer");
 			}
