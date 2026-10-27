@@ -56,4 +56,16 @@ public class TestTypedLiteral {
 	public void testToString() {
 		assertEquals("\"0.35\"^^<" + XSD_DECIMAL + ">", new TypedLiteral("0.35", XSD_DECIMAL).toString());
 	}
+
+	@Test
+	public void testIntegerValue() {
+		assertEquals(new java.math.BigInteger("21474836480"),
+				new TypedLiteral(" +21474836480", "http://www.w3.org/2001/XMLSchema#unsignedLong").integerValue());
+		try {
+			new TypedLiteral("1.5", "http://www.w3.org/2001/XMLSchema#decimal").integerValue();
+			fail("Expected an error for a decimal datatype");
+		} catch (IllegalStateException e) {
+			// expected
+		}
+	}
 }

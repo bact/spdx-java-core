@@ -7,6 +7,7 @@ package org.spdx.core;
 
 import static org.junit.Assert.*;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -236,6 +237,62 @@ public class TestCoreModelObject {
 			fail("Expected an error for a value too large for an Integer");
 		} catch (SpdxInvalidTypeException e) {
 			assertTrue(e.getMessage(), e.getMessage().contains("21474836480"));
+		}
+	}
+
+	@Test
+	public void testGetBigIntegerPropertyValue() throws InvalidSPDXAnalysisException {
+		assertFalse(modelType.getBigIntegerPropertyValue(INTEGER_PROPERTY_DESCRIPTOR).isPresent());
+		BigInteger large = new BigInteger("21474836480");
+		modelType.setPropertyValue(INTEGER_PROPERTY_DESCRIPTOR, large);
+		assertEquals(new TypedLiteral("21474836480", TypedLiteral.XSD_INTEGER),
+				modelType.getModelStore().getValue(modelType.getObjectUri(), INTEGER_PROPERTY_DESCRIPTOR).get());
+		assertEquals(Optional.of(large), modelType.getBigIntegerPropertyValue(INTEGER_PROPERTY_DESCRIPTOR));
+		modelType.setPropertyValue(INTEGER_PROPERTY_DESCRIPTOR, BigInteger.valueOf(42));
+		assertEquals(Optional.of(42), modelType.getIntegerPropertyValue(INTEGER_PROPERTY_DESCRIPTOR));
+		assertEquals(Optional.of(BigInteger.valueOf(42)), modelType.getBigIntegerPropertyValue(INTEGER_PROPERTY_DESCRIPTOR));
+		modelType.setPropertyValue(INTEGER_PROPERTY_DESCRIPTOR, Long.MIN_VALUE);
+		assertEquals(Optional.of(BigInteger.valueOf(Long.MIN_VALUE)), modelType.getBigIntegerPropertyValue(INTEGER_PROPERTY_DESCRIPTOR));
+	}
+
+	@Test
+	public void testIntegerTypedLiterals() throws InvalidSPDXAnalysisException {
+		// an xsd:integer literal is stored like an integer written through the API
+		modelType.setPropertyValue(INTEGER_PROPERTY_DESCRIPTOR, new TypedLiteral("+42", TypedLiteral.XSD_INTEGER));
+		assertEquals(42, modelType.getModelStore().getValue(modelType.getObjectUri(), INTEGER_PROPERTY_DESCRIPTOR).get());
+		// derived integer types are read as integers, whitespace collapsed
+		modelType.getModelStore().setValue(modelType.getObjectUri(), INTEGER_PROPERTY_DESCRIPTOR,
+				new TypedLiteral(" 42 ", "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"));
+		assertEquals(Optional.of(42), modelType.getIntegerPropertyValue(INTEGER_PROPERTY_DESCRIPTOR));
+		assertEquals(Optional.of(BigInteger.valueOf(42)), modelType.getBigIntegerPropertyValue(INTEGER_PROPERTY_DESCRIPTOR));
+		modelType.setPropertyValue(INTEGER_PROPERTY_DESCRIPTOR, (short)7);
+		assertEquals(Optional.of(7), modelType.getIntegerPropertyValue(INTEGER_PROPERTY_DESCRIPTOR));
+		modelType.getModelStore().setValue(modelType.getObjectUri(), INTEGER_PROPERTY_DESCRIPTOR,
+				new TypedLiteral("1.5", "http://www.w3.org/2001/XMLSchema#decimal"));
+		try {
+			modelType.getIntegerPropertyValue(INTEGER_PROPERTY_DESCRIPTOR);
+			fail("Expected an error for a decimal value");
+		} catch (SpdxInvalidTypeException e) {
+			assertFalse(e.getMessage(), e.getMessage().contains("does not fit"));
+		}
+	}
+
+	@Test
+	public void testGetBigIntegerPropertyValueWrongType() throws InvalidSPDXAnalysisException {
+		modelType.setPropertyValue(INTEGER_PROPERTY_DESCRIPTOR, "not a number");
+		try {
+			modelType.getBigIntegerPropertyValue(INTEGER_PROPERTY_DESCRIPTOR);
+			fail("Expected an error for a String value");
+		} catch (SpdxInvalidTypeException e) {
+			// expected
+		}
+		modelType.getModelStore().setValue(modelType.getObjectUri(), INTEGER_PROPERTY_DESCRIPTOR,
+				new TypedLiteral("1.5", "http://www.w3.org/2001/XMLSchema#decimal"));
+		try {
+			modelType.getBigIntegerPropertyValue(INTEGER_PROPERTY_DESCRIPTOR);
+			fail("Expected an error for a decimal value");
+		} catch (SpdxInvalidTypeException e) {
+			// expected
 		}
 	}
 

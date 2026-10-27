@@ -5,6 +5,7 @@
  */
 package org.spdx.core;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -380,22 +381,44 @@ public abstract class CoreModelObject {
 	 * @throws InvalidSPDXAnalysisException on any SPDX related exception
 	 */
 	public Optional<Integer> getIntegerPropertyValue(PropertyDescriptor propertyDescriptor) throws InvalidSPDXAnalysisException {
-		Optional<Object> result = getObjectPropertyValue(propertyDescriptor, Integer.class);
-		Optional<Integer> retval;
-		if (result.isPresent()) {
-			if (result.get() instanceof TypedLiteral) {
-				// a valid integer too large for an Integer, kept as read (e.g., an xsd:nonNegativeInteger)
-				throw new SpdxInvalidTypeException(PROPERTY_MSG+propertyDescriptor+" value "+
-						((TypedLiteral)result.get()).getValue()+" does not fit in a Java Integer");
-			}
-			if (!(result.get() instanceof Integer)) {
-				throw new SpdxInvalidTypeException(PROPERTY_MSG+propertyDescriptor+" is not of type Integer");
-			}
-			retval = Optional.of((Integer)result.get());
-		} else {
-			retval = Optional.empty();
+		Optional<BigInteger> result = getBigIntegerPropertyValue(propertyDescriptor);
+		if (!result.isPresent()) {
+			return Optional.empty();
 		}
-		return retval;
+		try {
+			return Optional.of(result.get().intValueExact());
+		} catch (ArithmeticException e) {
+			// a valid integer too large for an Integer (e.g., an xsd:nonNegativeInteger)
+			throw new SpdxInvalidTypeException(PROPERTY_MSG+propertyDescriptor+" value "+
+					result.get()+" does not fit in a Java Integer");
+		}
+	}
+
+	/**
+	 * Values are stored as an Integer, or as a TypedLiteral with an XML Schema integer datatype
+	 * when they do not fit in an Integer. Collections of BigInteger values are not supported.
+	 * @param propertyDescriptor Descriptor for a property
+	 * @return the Optional BigInteger value associated with a property, empty if no value is present
+	 * @throws InvalidSPDXAnalysisException on any SPDX related exception
+	 */
+	public Optional<BigInteger> getBigIntegerPropertyValue(PropertyDescriptor propertyDescriptor) throws InvalidSPDXAnalysisException {
+		Optional<Object> result = getObjectPropertyValue(propertyDescriptor, BigInteger.class);
+		if (!result.isPresent()) {
+			return Optional.empty();
+		}
+		Object value = result.get();
+		if (value instanceof Integer) {
+			return Optional.of(BigInteger.valueOf((Integer)value));
+		}
+		if (value instanceof TypedLiteral && TypedLiteral.XSD_INTEGER_TYPES.contains(((TypedLiteral)value).getDatatype())) {
+			try {
+				return Optional.of(((TypedLiteral)value).integerValue());
+			} catch (NumberFormatException e) {
+				throw new SpdxInvalidTypeException(PROPERTY_MSG+propertyDescriptor+" value "+
+						((TypedLiteral)value).getValue()+" is not an integer");
+			}
+		}
+		throw new SpdxInvalidTypeException(PROPERTY_MSG+propertyDescriptor+" is not of type Integer");
 	}
 
 	/**

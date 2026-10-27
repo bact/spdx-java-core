@@ -5,6 +5,7 @@
  */
 package org.spdx.core;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -221,6 +222,17 @@ public class ModelObjectHelper {
 			} else {
 				return mValue.toTypedValue();
 			}
+		} else if (value instanceof BigInteger) {
+			return integerToStoredValue((BigInteger)value);
+		} else if (value instanceof Long || value instanceof Short || value instanceof Byte) {
+			return integerToStoredValue(BigInteger.valueOf(((Number)value).longValue()));
+		} else if (value instanceof TypedLiteral && TypedLiteral.XSD_INTEGER.equals(((TypedLiteral)value).getDatatype())) {
+			// same stored form as an integer written through the API
+			try {
+				return integerToStoredValue(((TypedLiteral)value).integerValue());
+			} catch (NumberFormatException e) {
+				throw new SpdxInvalidTypeException("Invalid xsd:integer value: "+((TypedLiteral)value).getValue());
+			}
 		} else if (value instanceof Integer || value instanceof String ||
 				value instanceof Boolean || value instanceof Double || value instanceof Float ||
 				value instanceof TypedLiteral) {
@@ -229,6 +241,18 @@ public class ModelObjectHelper {
 			throw new SpdxInvalidTypeException("Property value is null");
 		} else {
 			throw new SpdxInvalidTypeException("Property value type not supported: "+value.getClass().getName());
+		}
+	}
+
+	/**
+	 * @param value integer value
+	 * @return an Integer if the value fits, otherwise a TypedLiteral with the XSD integer datatype
+	 */
+	public static Object integerToStoredValue(BigInteger value) {
+		try {
+			return value.intValueExact();
+		} catch (ArithmeticException e) {
+			return new TypedLiteral(value.toString(), TypedLiteral.XSD_INTEGER);
 		}
 	}
 	
